@@ -1,0 +1,15 @@
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.csproj.AssemblyReference.cache
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.GeneratedMSBuildEditorConfig.editorconfig
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.AssemblyInfoInputs.cache
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.AssemblyInfo.cs
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.csproj.CoreCompileInputs.cache
+/home/student/DanC#/CasinoGame/bin/Debug/net6.0/CasinoGame
+/home/student/DanC#/CasinoGame/bin/Debug/net6.0/CasinoGame.deps.json
+/home/student/DanC#/CasinoGame/bin/Debug/net6.0/CasinoGame.runtimeconfig.json
+/home/student/DanC#/CasinoGame/bin/Debug/net6.0/CasinoGame.dll
+/home/student/DanC#/CasinoGame/bin/Debug/net6.0/CasinoGame.pdb
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.dll
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/refint/CasinoGame.dll
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.pdb
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/CasinoGame.genruntimeconfig.cache
+/home/student/DanC#/CasinoGame/obj/Debug/net6.0/ref/CasinoGame.dll

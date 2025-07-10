@@ -1,116 +1,292 @@
-﻿static void Slot(int money)
+﻿using System;
+using System.Threading;
+
+class Program
 {
-    // Pocatecni nastaveni
-    Console.WriteLine("Vítej v casinu!\n ----------\n\n");
-    Random rnd = new Random();
-    int spinCount = 0;
-
-    // Hlavni loop
-    while (money > 0)
+    static int ShowMenu(string[] options, int money)
     {
-        // Hrac zada sazku a range
-        Thread.Sleep(650);
-        Console.WriteLine($"\nAktuálně máš {money} korun");
-        Console.WriteLine("Zadej sázku");
+        int currentSelection = 0;
+        ConsoleKey key;
 
-        if (!int.TryParse(Console.ReadLine(), out int bet) || bet <= 0)
+        do
         {
-            Console.WriteLine("Neplatná hodnota");
-            continue;
-        }
-        else if (bet > money)
-        {
-            Console.WriteLine("Lol broke ass bitch zadej sázku na kterou atually máš bez prodeje orgánů");
-            continue;
-        }
+            Console.Clear();
 
-        Console.WriteLine("Zadej počet čísel v automatu, minimum je 5(psst... od sedmi máš bonus)");
-        if (!int.TryParse(Console.ReadLine(), out int range) || range < 5)
-        {
-            Console.WriteLine("Neplatná hodnota");
-            continue;
-        }
-
-        money -= bet;
-        int slot1, slot2, slot3;
-
-        // Zarucena vyhra prvni 3 spiny
-        spinCount++;
-
-        if (spinCount <= 3)
-        {
-            slot1 = slot2 = rnd.Next(1, range + 1);
-
-            if (spinCount == 2 && bet < 2000 && range < 10)
+            for (int i = 0; i < options.Length; i++)
             {
-                slot3 = slot1;
+                if (i == currentSelection)
+                {
+                    Console.BackgroundColor = ConsoleColor.White;
+                    Console.ForegroundColor = ConsoleColor.Black;
+                }
+                else
+                {
+                    Console.ResetColor();
+                }
+                Console.WriteLine(options[i]);
+            }
+            Console.ResetColor();
+            Console.WriteLine($"\nMáš {money} korun");
+            var keyInfo = Console.ReadKey(true);
+            key = keyInfo.Key;
+
+            if (key == ConsoleKey.UpArrow)
+            {
+                currentSelection--;
+                if (currentSelection < 0)
+                    currentSelection = options.Length - 1;
+            }
+            else if (key == ConsoleKey.DownArrow)
+            {
+                currentSelection++;
+                if (currentSelection >= options.Length)
+                    currentSelection = 0;
+            }
+
+        } while (key != ConsoleKey.Enter);
+
+        return currentSelection;
+    }
+
+    static int Slot(int money, bool firstSession)
+    {
+        Thread.Sleep(200);
+        Console.Clear();
+        Random rnd = new Random();
+        int spinCount = 0;
+
+        while (money > 0)
+        {
+            Console.Clear();
+            Console.WriteLine("Hrací automat!\n ----------\n\n");
+            Thread.Sleep(350);
+            Console.WriteLine($"\nAktuálně máš {money} korun");
+            Console.WriteLine("Zadej sázku");
+
+            if (!int.TryParse(Console.ReadLine(), out int bet) || bet <= 0)
+            {
+                Console.WriteLine("Neplatná hodnota");
+                continue;
+            }
+            else if (bet > money)
+            {
+                Console.WriteLine("Lol broke ass bitch zadej sázku na kterou actually máš bez prodeje orgánů");
+                continue;
+            }
+
+            Console.WriteLine("Zadej počet čísel v automatu, minimum je 5(psst... od sedmi máš bonus)");
+            if (!int.TryParse(Console.ReadLine(), out int range) || range < 5)
+            {
+                Console.WriteLine("Neplatná hodnota");
+                continue;
+            }
+
+            money -= bet;
+            int slot1, slot2, slot3;
+
+            // Rig, prvni 3 spiny jsou garantovana vyhra
+            spinCount++;
+            if (spinCount <= 3 && firstSession == true)
+            {
+                slot1 = slot2 = rnd.Next(1, range + 1);
+                if (spinCount == 2 && bet < 2000 && range < 10)
+                {
+                    slot3 = slot1;
+                }
+                else
+                {
+                    slot3 = rnd.Next(1, range + 1);
+                }
             }
             else
             {
+                slot1 = rnd.Next(1, range + 1);
+                slot2 = rnd.Next(1, range + 1);
                 slot3 = rnd.Next(1, range + 1);
             }
-        }
-        // Normalni vyhodnoceni
-        else
-        {
-            slot1 = rnd.Next(1, range + 1);
-            slot2 = rnd.Next(1, range + 1);
-            slot3 = rnd.Next(1, range + 1);
-        }
 
-        Console.WriteLine("\n");
+            Console.WriteLine("\n");
 
-        // Animace spinu
-        for (int i = 0; i < 40; i++)
-        {
-            Console.Write("\r" + rnd.Next(1, range + 1) + " " + rnd.Next(1, range + 1) + " " + rnd.Next(1, range + 1) + "           ");
-            Thread.Sleep(100);
-        }
-
-        Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
-        Thread.Sleep(500);
-
-        // Vyhodnoceni
-        // Jackpot (3 matching)
-        if (slot1 == slot2 && slot2 == slot3)
-        {
-            int win = bet * 10;
-
-            if (range < 8)
+            // Animace spinu
+            for (int i = 0; i < 40; i++)
             {
-                win = (int)(win * ((double)range / 10 + 0.3));
+                Console.Write("\r" + rnd.Next(1, range + 1) + " " + rnd.Next(1, range + 1) + " " + rnd.Next(1, range + 1) + "           ");
+                Thread.Sleep(100);
             }
 
-            Console.WriteLine($"\nJackpot! Výhral jsi {win} korun!");
-            money += win;
-        }
-        // Big win (2 matching)
-        else if (slot1 == slot2 || slot1 == slot3 || slot2 == slot3)
-        {
-            money = 1000;
-
-            int win = bet * 2;
-
-            if (range < 8)
+            // Vyhodnoceni vyhry
+            // Jackpot
+            if (slot1 == slot2 && slot2 == slot3)
             {
-                win = (int)(win * ((double)range / 10 + 0.3));
+                int win = bet * 10;
+                if (range < 8)
+                    win = (int)(win * ((double)range / 10 + 0.3));
+                    Console.Write("\x1b[38;2;0;255;0m");
+                    Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
+                Thread.Sleep(500);
+                Console.WriteLine($"\nJackpot! Výhral jsi {win} korun!");
+                money += win;
             }
+
+            // Big win
+            else if (slot1 == slot2 || slot1 == slot3 || slot2 == slot3)
+            {
+                int win = bet * 2;
+                if (range < 8)
+                    win = (int)(win * ((double)range / 10 + 0.3));
+                else
+                    win += range * 10;
+
+                Console.Write("\x1b[38;2;0;255;0m");
+                Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
+                Thread.Sleep(500);
+                Console.WriteLine($"\nBig win! Výhral jsi {win} korun!");
+                money += win;
+            }
+
+            //Prohra
             else
             {
-                win += range * 10;
+                Console.Write("\x1b[38;2;255;0;0m");
+                Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
+                Thread.Sleep(500);
+                Console.WriteLine("\nBohužel jsi prohrál, ale zkus to znovu, tentokrát to určitě vyjde!");                
+            }
+            Console.ResetColor();
+            Thread.Sleep(1500);
+        }
+
+        Thread.Sleep(500);
+        Console.WriteLine("Bohužel ti došly peníze, končíš");
+        return money;
+        Thread.Sleep(650);
+    }
+
+    static int GuessingGame(int money)
+    {
+        Random rng = new Random();
+        string[] options = {"Hrát znovu", "Exit"};
+        int number = rng.Next(1, 101);
+        int playerGuess = 0;
+        int attempts = 0;
+        int bet = 0;
+        int reward = 0;
+        bool isSmaller = false;
+        bool hasGuessed = false;
+        while (playerGuess != number && attempts <= 10)
+        {
+            Console.ResetColor();
+            Console.Clear();
+            Console.WriteLine("Uhodni číslo\n----------");
+            attempts++;
+
+            // Ukazat posledni pokus
+            if(isSmaller && hasGuessed)
+            {
+                Console.Write("\x1b[38;2;255;0;0m");
+                Console.WriteLine(playerGuess);
+                Console.WriteLine("To není ono, zkus menší číslo");
+            }
+            else if(!isSmaller && hasGuessed)
+            {
+                Console.Write("\x1b[38;2;255;0;0m");
+                Console.WriteLine(playerGuess);
+                Console.WriteLine("To není ono, zkus větší číslo");
             }
 
-            Console.WriteLine($"\nBig win! Výhral jsi {win} korun!");
-            money += win;
+            // Zadani sazky
+            if(!hasGuessed)
+            {
+                Thread.Sleep(400);
+                Console.WriteLine("Zadej svoji sázku, máš 10 pokusů");
+                if(!int.TryParse(Console.ReadLine(), out bet))
+                {
+                    Console.WriteLine("Neplatný vstup");
+                    continue;
+                }
+                money -= bet;
+            }
+
+            // Hlavni gameplay loop
+            Console.ResetColor();
+            Console.WriteLine($"Pokus {attempts}/10");
+            Console.WriteLine("Zadej svůj tip");
+            hasGuessed = true;
+
+            if (!int.TryParse(Console.ReadLine(), out playerGuess))
+            {
+                Console.WriteLine("Neplatná hodnota!");
+                continue;
+            }
+
+            if (playerGuess > number)
+            {
+                Console.Write("\x1b[38;2;255;0;0m");
+                Console.WriteLine("To není ono, zkus menší číslo");
+                isSmaller = true;
+            }
+            else if (playerGuess < number)
+            {
+                Console.Write("\x1b[38;2;255;0;0m");
+                Console.WriteLine("To není ono, zkus větší číslo");
+                isSmaller = false;
+            }
+            Thread.Sleep(1400);
         }
-        // Prohra, womp womp
+        if(attempts <= 10) 
+        {
+            // Vypocet rewardu
+            reward = (int)(bet * Math.Pow(1.6, (10 - attempts) / 2.0));
+            reward += bet;
+            money += reward;
+
+            Console.Write("\x1b[38;2;0;255;0m");
+            Console.WriteLine($"Gratulujeme! Uhádl jsi číslo {number}, zabralo ti to {attempts} pokusů a vyhrál jsi {reward} korun");
+            Thread.Sleep(4000);
+        }
         else
         {
-            Console.WriteLine("\nBohužel jsi prohrál, ale zkus to znovu, tentokrát to určitě vyjde!");
+            Console.Write("\x1b[38;2;255;0;0m");
+            Console.WriteLine($"Bohužel jsi prohrál, číslo bylo {number}.");
+            Thread.Sleep(4000);
+        }
+        
+        isSmaller = false;
+        int choice = ShowMenu(options, money);
+        
+        if(choice == 0)
+        {
+            GuessingGame(money);
+            return money;
+        }
+        else
+        {
+            return money;
         }
     }
 
-    Thread.Sleep(650);
-    Console.WriteLine("Bohužel ti došly peníze, končíš");
-    return;
+    static void Main()
+    {
+        int money = 1000;
+        bool firstSession = true;
+        while(true)
+        {
+            string[] options = { "Automat", "Hádání čísel", "Ukončit" };
+            int choice = ShowMenu(options, money);
+
+            switch (choice)
+            {
+                case 0:
+                    money = Slot(money, firstSession);
+                    firstSession = false;
+                    break;
+                case 1:
+                    money = GuessingGame(money);
+                    firstSession = false;
+                    break;
+                case 2:
+                    return;
+            }
+        }
+    }
 }
