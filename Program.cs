@@ -81,7 +81,7 @@ class Program
                 }
                 else if (bet > money)
                 {
-                    Console.WriteLine("Lol broke ass bitch zadej sázku na kterou actually máš bez prodeje orgánů:");
+                    Console.WriteLine("Lol broke ass bitch zadej sázku na kterou actually máš bez prodeje orgánů");
                     Thread.Sleep(800);
                     continue;
                 }
@@ -142,7 +142,7 @@ class Program
                 Console.Write("\x1b[38;2;0;255;0m");
                 Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
                 Thread.Sleep(500);
-                Console.WriteLine($"\nJackpot! Výhral jsi {win} korun!");
+                Console.WriteLine($"\nJackpot! Výhral jsi {win - bet} korun!");
                 money += win;
             }
 
@@ -152,15 +152,9 @@ class Program
                 int win = (int)(bet * 1.3);
 
                 if (range < 8)
-                    win = (int)(win * 0.5);
-                else if (range >= 8)
-                    win = (int)(win * 1.1);
-                win += bet;
-
-                Console.Write("\x1b[38;2;0;255;0m");
-                Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
+                    win = (int)(win * 0.5);  if (spinCount <= 3 && firstSession == true && range <= 15) " + slot2 + " " + slot3);
                 Thread.Sleep(800);
-                Console.WriteLine($"\nBig win! Výhral jsi {win} korun!");
+                Console.WriteLine($"\nBig win! Výhral jsi {win - bet} korun!");
                 money += win;
             }
 
