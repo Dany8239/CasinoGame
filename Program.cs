@@ -3,6 +3,13 @@ using System.Threading;
 
 class Program
 {
+    static int WaitForKeyPress()
+    {
+        Console.WriteLine("Stiskni libovolnou klávesu pro pokračování...");
+        while (Console.ReadKey(true).Key != ConsoleKey.Enter) { }
+        return 0;
+    }
+
     static int ShowMenu(string[] options, int money)
     {
         int currentSelection = 0;
@@ -54,31 +61,39 @@ class Program
         Console.Clear();
         Random rnd = new Random();
         int spinCount = 0;
+        int bet = 0;
+        int range = 0;
 
         while (money > 0)
         {
-            Console.Clear();
-            Console.WriteLine("Hrací automat!\n ----------\n\n");
+            Console.WriteLine("Hrací automat!\n ------------\n");
             Thread.Sleep(350);
             Console.WriteLine($"\nAktuálně máš {money} korun");
-            Console.WriteLine("Zadej sázku");
+            // Kontrola vstupu pro sazku
+            while (true)
+            {
+                Console.WriteLine("Zadej sázku:");
+                if (!int.TryParse(Console.ReadLine(), out bet) || bet <= 0)
+                {
+                    Console.WriteLine("Neplatná hodnota");
+                    Thread.Sleep(800);
+                    continue;
+                }
+                else if (bet > money)
+                {
+                    Console.WriteLine("Lol broke ass bitch zadej sázku na kterou actually máš bez prodeje orgánů:");
+                    Thread.Sleep(800);
+                    continue;
+                }
+                Console.WriteLine("Zadej počet čísel v automatu, minimum je 5(psst... od osmi máš bonus):");
+                if (!int.TryParse(Console.ReadLine(), out range) || range < 5)
+                {
+                    Console.WriteLine("Neplatná hodnota");
+                    Thread.Sleep(800);
+                    continue;
+                }
 
-            if (!int.TryParse(Console.ReadLine(), out int bet) || bet <= 0)
-            {
-                Console.WriteLine("Neplatná hodnota");
-                continue;
-            }
-            else if (bet > money)
-            {
-                Console.WriteLine("Lol broke ass bitch zadej sázku na kterou actually máš bez prodeje orgánů");
-                continue;
-            }
-
-            Console.WriteLine("Zadej počet čísel v automatu, minimum je 5(psst... od sedmi máš bonus)");
-            if (!int.TryParse(Console.ReadLine(), out int range) || range < 5)
-            {
-                Console.WriteLine("Neplatná hodnota");
-                continue;
+                break;
             }
 
             money -= bet;
@@ -86,7 +101,7 @@ class Program
 
             // Rig, prvni 3 spiny jsou garantovana vyhra
             spinCount++;
-            if (spinCount <= 3 && firstSession == true)
+            if (spinCount <= 3 && firstSession == true && range <= 15)
             {
                 slot1 = slot2 = rnd.Next(1, range + 1);
                 if (spinCount == 2 && bet < 2000 && range < 10)
@@ -118,11 +133,14 @@ class Program
             // Jackpot
             if (slot1 == slot2 && slot2 == slot3)
             {
-                int win = bet * 10;
+                int win = bet * 6;
                 if (range < 8)
-                    win = (int)(win * ((double)range / 10 + 0.3));
-                    Console.Write("\x1b[38;2;0;255;0m");
-                    Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
+                    win = (int)(win * 0.5);
+                else if (range >= 8)
+                    win = (int)(win * 1.1);
+                win += bet;
+                Console.Write("\x1b[38;2;0;255;0m");
+                Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
                 Thread.Sleep(500);
                 Console.WriteLine($"\nJackpot! Výhral jsi {win} korun!");
                 money += win;
@@ -131,35 +149,40 @@ class Program
             // Big win
             else if (slot1 == slot2 || slot1 == slot3 || slot2 == slot3)
             {
-                int win = bet * 2;
+                int win = (int)(bet * 1.3);
+
                 if (range < 8)
-                    win = (int)(win * ((double)range / 10 + 0.3));
-                else
-                    win += range * 10;
+                    win = (int)(win * 0.5);
+                else if (range >= 8)
+                    win = (int)(win * 1.1);
+                win += bet;
 
                 Console.Write("\x1b[38;2;0;255;0m");
                 Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
-                Thread.Sleep(500);
+                Thread.Sleep(800);
                 Console.WriteLine($"\nBig win! Výhral jsi {win} korun!");
                 money += win;
             }
 
-            //Prohra
+            //Prohra, womp womp
             else
             {
                 Console.Write("\x1b[38;2;255;0;0m");
                 Console.Write("\r" + slot1 + " " + slot2 + " " + slot3);
-                Thread.Sleep(500);
-                Console.WriteLine("\nBohužel jsi prohrál, ale zkus to znovu, tentokrát to určitě vyjde!");                
+                Thread.Sleep(800);
+                Console.WriteLine("\nBohužel jsi prohrál, ale zkus to znovu, tentokrát to určitě vyjde!");
             }
             Console.ResetColor();
-            Thread.Sleep(1500);
+            WaitForKeyPress();
+            Console.Clear();
+
         }
 
         Thread.Sleep(500);
         Console.WriteLine("Bohužel ti došly peníze, končíš");
-        return money;
         Thread.Sleep(650);
+        return money;
+
     }
 
     static int GuessingGame(int money)
@@ -173,7 +196,7 @@ class Program
         int reward = 0;
         bool isSmaller = false;
         bool hasGuessed = false;
-        while (playerGuess != number && attempts <= 10)
+        while (playerGuess != number && attempts < 10)
         {
             Console.ResetColor();
             Console.Clear();
@@ -198,7 +221,7 @@ class Program
             if(!hasGuessed)
             {
                 Thread.Sleep(400);
-                Console.WriteLine("Zadej svoji sázku, máš 10 pokusů");
+                Console.WriteLine("Zadej svoji sázku, máš 10 pokusů:");
                 if(!int.TryParse(Console.ReadLine(), out bet))
                 {
                     Console.WriteLine("Neplatný vstup");
@@ -210,7 +233,7 @@ class Program
             // Hlavni gameplay loop
             Console.ResetColor();
             Console.WriteLine($"Pokus {attempts}/10");
-            Console.WriteLine("Zadej svůj tip");
+            Console.WriteLine("Zadej svůj tip:");
             hasGuessed = true;
 
             if (!int.TryParse(Console.ReadLine(), out playerGuess))
@@ -242,13 +265,14 @@ class Program
 
             Console.Write("\x1b[38;2;0;255;0m");
             Console.WriteLine($"Gratulujeme! Uhádl jsi číslo {number}, zabralo ti to {attempts} pokusů a vyhrál jsi {reward} korun");
-            Thread.Sleep(4000);
+            Thread.Sleep(500);
+            WaitForKeyPress();
         }
         else
         {
             Console.Write("\x1b[38;2;255;0;0m");
             Console.WriteLine($"Bohužel jsi prohrál, číslo bylo {number}.");
-            Thread.Sleep(4000);
+            WaitForKeyPress();
         }
         
         isSmaller = false;
@@ -269,7 +293,7 @@ class Program
     {
         int money = 1000;
         bool firstSession = true;
-        while(true)
+        while(money > 0)
         {
             string[] options = { "Automat", "Hádání čísel", "Ukončit" };
             int choice = ShowMenu(options, money);
@@ -282,7 +306,6 @@ class Program
                     break;
                 case 1:
                     money = GuessingGame(money);
-                    firstSession = false;
                     break;
                 case 2:
                     return;
