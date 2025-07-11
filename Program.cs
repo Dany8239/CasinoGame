@@ -16,7 +16,7 @@ class Program
         return 0;
     }
 
-    // Nacteni anon klice z .env, mozna bude nevyuzite pokud se mi napodari nastavit automatizaci
+    // Nacteni anon klice z .env, mozna bude nevyuzite pokud se mi napodari nastavit automatizace
     static void LoadEnv(string filePath)
     {
         if (!File.Exists(filePath)) return;
