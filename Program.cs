@@ -335,7 +335,7 @@ static int ShowMenu(string[] options, int money, string header = "")
             }
             Thread.Sleep(1400);
         }
-        if(attempts <= 10) 
+        if(attempts <= 10 && playerGuess == number) 
         {
             // Vypocet rewardu
             double maxLog = Math.Log(11);
