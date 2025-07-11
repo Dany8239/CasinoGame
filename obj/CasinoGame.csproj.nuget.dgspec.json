@@ -1,30 +1,30 @@
 {
   "format": 1,
   "restore": {
-    "/home/dany/Coding/C#/CasinoGame/CasinoGame.csproj": {}
+    "/home/student/DanC#/CasinoGame/CasinoGame.csproj": {}
   },
   "projects": {
-    "/home/dany/Coding/C#/CasinoGame/CasinoGame.csproj": {
+    "/home/student/DanC#/CasinoGame/CasinoGame.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/home/dany/Coding/C#/CasinoGame/CasinoGame.csproj",
+        "projectUniqueName": "/home/student/DanC#/CasinoGame/CasinoGame.csproj",
         "projectName": "CasinoGame",
-        "projectPath": "/home/dany/Coding/C#/CasinoGame/CasinoGame.csproj",
-        "packagesPath": "/home/dany/.nuget/packages/",
-        "outputPath": "/home/dany/Coding/C#/CasinoGame/obj/",
+        "projectPath": "/home/student/DanC#/CasinoGame/CasinoGame.csproj",
+        "packagesPath": "/home/student/.nuget/packages/",
+        "outputPath": "/home/student/DanC#/CasinoGame/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/home/dany/.nuget/NuGet/NuGet.Config"
+          "/home/student/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net8.0"
+          "net6.0"
         ],
         "sources": {
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net8.0": {
-            "targetAlias": "net8.0",
+          "net6.0": {
+            "targetAlias": "net6.0",
             "projectReferences": {}
           }
         },
@@ -35,8 +35,8 @@
         }
       },
       "frameworks": {
-        "net8.0": {
-          "targetAlias": "net8.0",
+        "net6.0": {
+          "targetAlias": "net6.0",
           "imports": [
             "net461",
             "net462",
@@ -48,12 +48,26 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[6.0.8, 6.0.8]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.linux-x64",
+              "version": "[6.0.8, 6.0.8]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[6.0.8, 6.0.8]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/lib/dotnet/sdk/8.0.117/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
         }
       }
     }

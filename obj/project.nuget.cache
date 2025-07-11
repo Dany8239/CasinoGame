@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "wxTrJ8Fy74IMOyka1gcfdTSQkesYQWxubXkUH5+FnLc/zhzE+iSkd2re9TyX5xZIw7Y+CUwRTdLsFDP340lIog==",
+  "dgSpecHash": "o8XBVlXmORMDcMAgg6CQ9uOHU5ivV8y6agT5TlYwa+R12l0goXg1Me9n3bsyDlueHNl65ql0SnuMJg7Nc2bc3g==",
   "success": true,
-  "projectFilePath": "/home/dany/Coding/C#/CasinoGame/CasinoGame.csproj",
-  "expectedPackageFiles": [],
+  "projectFilePath": "/home/student/DanC#/CasinoGame/CasinoGame.csproj",
+  "expectedPackageFiles": [
+    "/home/student/.nuget/packages/microsoft.netcore.app.ref/6.0.8/microsoft.netcore.app.ref.6.0.8.nupkg.sha512",
+    "/home/student/.nuget/packages/microsoft.aspnetcore.app.ref/6.0.8/microsoft.aspnetcore.app.ref.6.0.8.nupkg.sha512",
+    "/home/student/.nuget/packages/microsoft.netcore.app.host.linux-x64/6.0.8/microsoft.netcore.app.host.linux-x64.6.0.8.nupkg.sha512"
+  ],
   "logs": []
 }
